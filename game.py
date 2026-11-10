@@ -247,13 +247,42 @@ class QuizGame:
 
         print("-"*40)
 
-        
     def show_score(self):
-        print("\n🚧 준비 중입니다...")
+        """점수 확인"""
+        print("\n" + "="*40)
+        print("         📊 점수 현황")
+        print("="*40)
+
+        if self.best_score == 0:
+            print("  아직 퀴즈를 풀지 않았습니다.")
+            print("  퀴즈를 풀고 점수를 기록해보세요! 🎯")
+        else:
+            print(f"  🏆 최고 점수: {self.best_score}점")
+
+            # 점수 등급 표시
+            if self.best_score == 100:
+                grade = "🥇 완벽합니다! 천재시군요!"
+            elif self.best_score >= 80:
+                grade = "🥈 훌륭합니다! 조금만 더 화이팅!"
+            elif self.best_score >= 60:
+                grade = "🥉 괜찮아요! 다시 도전해보세요!"
+            else:
+                grade = "💪 포기하지 마세요! 연습이 필요해요!"
+
+            print(f"  {grade}")
+
+        print(f"\n  📋 등록된 퀴즈 수: {len(self.quizzes)}개")
+        print("="*40)        
+
 
     def load_data(self):
         self.quizzes = list(DEFAULT_QUIZZES)
 
+
+
+
     def save_data(self):
         pass
+
+
 
