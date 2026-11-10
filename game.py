@@ -177,7 +177,55 @@ class QuizGame:
         self.save_data()     
         
     def add_quiz(self):
-        print("\n🚧 준비 중입니다...")
+        """퀴즈 추가"""
+        print("\n📌 새로운 퀴즈를 추가합니다.")
+        print("(취소하려면 아무 입력 없이 Enter)\n")
+
+        # 문제 입력
+        question = input("문제를 입력하세요: ").strip()
+        if question == "":
+            print("⚠️ 취소되었습니다.")
+            return
+
+        # 선택지 4개 입력
+        choices = []
+        for i in range(1, 5):
+            while True:
+                choice = input(f"선택지 {i}: ").strip()
+                if choice == "":
+                    print("⚠️ 선택지는 비워둘 수 없습니다.")
+                    continue
+                choices.append(choice)
+                break
+
+        # 정답 번호 입력
+        while True:
+            try:
+                ans = input("정답 번호 (1-4): ").strip()
+                if ans == "":
+                    print("⚠️ 입력이 없습니다.")
+                    continue
+                ans = int(ans)
+                if not (1 <= ans <= 4):
+                    print("⚠️ 1-4 사이의 숫자를 입력하세요.")
+                    continue
+                break
+            except ValueError:
+                print("⚠️ 숫자를 입력하세요. (1-4)")
+
+        # 힌트 입력 (선택)
+        hint = input("힌트 입력 (없으면 Enter): ").strip()
+
+        # Quiz 객체 생성 후 목록에 추가
+        new_quiz = Quiz(question, choices, ans, hint)
+        self.quizzes.append(new_quiz)
+
+        # 파일 저장
+        self.save_data()
+
+        print("\n✅ 퀴즈가 추가되었습니다!")
+        print(f"📊 현재 퀴즈 수: {len(self.quizzes)}개")
+
 
     def show_quiz_list(self):
         print("\n🚧 준비 중입니다...")
@@ -191,68 +239,3 @@ class QuizGame:
     def save_data(self):
         pass
 
-    def play_quiz(self):
-        """퀴즈 풀기"""
-        if not self.quizzes:
-            print("\n⚠️ 등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가해주세요.")
-            return
-
-        print(f"\n📝 퀴즈를 시작합니다! (총 {len(self.quizzes)}문제)")
-        score = 0
-
-        for i, quiz in enumerate(self.quizzes, 1):
-            print("\n" + "-"*40)
-            quiz.display(i)
-
-            # 정답 입력 처리
-            while True:
-                try:
-                    ans = input("\n정답 입력 (1-4, h=힌트): ").strip()
-
-                    if ans == "":
-                        print("⚠️ 입력이 없습니다.")
-                        continue
-
-                    # 힌트 요청
-                    if ans.lower() == "h":
-                        if quiz.hint:
-                            print(f"💡 힌트: {quiz.hint}")
-                        else:
-                            print("💡 힌트가 없습니다.")
-                        continue
-
-                    ans = int(ans)
-
-                    if not (1 <= ans <= 4):
-                        print("⚠️ 1-4 사이의 숫자를 입력하세요.")
-                        continue
-
-                    # 정답 확인
-                    if quiz.check_answer(ans):
-                        print("✅ 정답입니다!")
-                        score += 1
-                    else:
-                        print(f"❌ 오답입니다. 정답은 {quiz.answer}번 입니다.")
-                    break
-
-                except ValueError:
-                    print("⚠️ 숫자를 입력하세요. (1-4, h=힌트)")
-
-        # 결과 출력
-        total = len(self.quizzes)
-        percent = int(score / total * 100)
-
-        print("\n" + "="*40)
-        print(f"🏆 결과: {total}문제 중 {score}문제 정답! ({percent}점)")
-
-        # 최고 점수 갱신
-        if percent > self.best_score:
-            self.best_score = percent
-            print("🎉 새로운 최고 점수입니다!")
-        else:
-            print(f"📊 현재 최고 점수: {self.best_score}점")
-
-        print("="*40)
-
-        # 결과 저장
-        self.save_data()     
