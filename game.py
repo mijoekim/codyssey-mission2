@@ -1,4 +1,4 @@
-# game.py 상단에 작성
+# game.py 
 from quiz import Quiz
 
 DEFAULT_QUIZZES = [
@@ -39,3 +39,91 @@ DEFAULT_QUIZZES = [
         hint="이름이 직책과 비슷"
     ),
 ]
+
+# 추가
+
+class QuizGame:
+    """퀴즈 게임 전체를 관리하는 클래스"""
+
+    def __init__(self):
+        self.quizzes = []        # 퀴즈 목록
+        self.best_score = 0      # 최고 점수
+        self.load_data()         # 파일에서 데이터 불러오기
+
+    def show_menu(self):
+        """메뉴 출력"""
+        print("\n" + "="*40)
+        print("       🎯 나만의 퀴즈 게임 🎯")
+        print("="*40)
+        print("  1. 퀴즈 풀기")
+        print("  2. 퀴즈 추가")
+        print("  3. 퀴즈 목록")
+        print("  4. 점수 확인")
+        print("  5. 종료")
+        print("="*40)
+
+    def get_menu_choice(self):
+        """메뉴 선택 입력 처리"""
+        while True:
+            try:
+                choice = input("선택: ").strip()
+                if choice == "":
+                    print("⚠️ 입력이 없습니다. 1-5 사이의 숫자를 입력하세요.")
+                    continue
+                choice = int(choice)
+                if 1 <= choice <= 5:
+                    return choice
+                else:
+                    print("⚠️ 잘못된 입력입니다. 1-5 사이의 숫자를 입력하세요.")
+            except ValueError:
+                print("⚠️ 잘못된 입력입니다. 1-5 사이의 숫자를 입력하세요.")
+
+    def run(self):
+        """게임 메인 루프"""
+        print("\n📂 게임을 시작합니다!")
+        while True:
+            try:
+                self.show_menu()
+                choice = self.get_menu_choice()
+
+                if choice == 1:
+                    self.play_quiz()
+                elif choice == 2:
+                    self.add_quiz()
+                elif choice == 3:
+                    self.show_quiz_list()
+                elif choice == 4:
+                    self.show_score()
+                elif choice == 5:
+                    self.save_data()
+                    print("\n👋 게임을 종료합니다. 수고하셨습니다!")
+                    break
+
+            except KeyboardInterrupt:
+                print("\n\n⚠️ 프로그램을 중단합니다. 데이터를 저장합니다...")
+                self.save_data()
+                print("💾 저장 완료. 안전하게 종료합니다.")
+                break
+            except EOFError:
+                print("\n⚠️ 입력 스트림이 종료되었습니다. 안전하게 종료합니다.")
+                self.save_data()
+                break
+
+    # 아직 구현 안 된 메서드 (다음 STEP에서 채움)
+    def play_quiz(self):
+        print("\n🚧 준비 중입니다...")
+
+    def add_quiz(self):
+        print("\n🚧 준비 중입니다...")
+
+    def show_quiz_list(self):
+        print("\n🚧 준비 중입니다...")
+
+    def show_score(self):
+        print("\n🚧 준비 중입니다...")
+
+    def load_data(self):
+        self.quizzes = list(DEFAULT_QUIZZES)
+
+    def save_data(self):
+        pass
