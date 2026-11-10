@@ -228,8 +228,26 @@ class QuizGame:
 
 
     def show_quiz_list(self):
-        print("\n🚧 준비 중입니다...")
+        """퀴즈 목록 출력"""
+        if not self.quizzes:
+            print("\n⚠️ 등록된 퀴즈가 없습니다.")
+            return
 
+        print(f"\n📋 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)")
+        print("-"*40)
+
+        for i, quiz in enumerate(self.quizzes, 1):
+            print(f"[{i}] {quiz.question}")
+            for j, choice in enumerate(quiz.choices, 1):
+                print(f"     {j}. {choice}")
+            print(f"     ✅ 정답: {quiz.answer}번")
+            if quiz.hint:
+                print(f"     💡 힌트: {quiz.hint}")
+            print()
+
+        print("-"*40)
+
+        
     def show_score(self):
         print("\n🚧 준비 중입니다...")
 
